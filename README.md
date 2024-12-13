@@ -1,0 +1,1 @@
+> a series demo about learning solidity.

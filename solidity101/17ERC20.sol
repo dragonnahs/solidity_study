@@ -11,6 +11,7 @@ contract MyToken is Context, IERC20 {
     uint256 private _totalSupply; // 总供应量
     mapping(address => uint256) private _balance; // 余额
     mapping (address => mapping (address => uint256)) private _allowance; // 授权额度
+    address public realFrom;
 
     constructor(string memory name_, string memory symbol_, uint256 initialSupply) {
         _name = name_;
@@ -70,9 +71,10 @@ contract MyToken is Context, IERC20 {
     }
     // 内部转账
     function _transfer(address from, address to, uint256 amount) internal {
+        realFrom = from;
         require(from != address(0), "from cannot be zero");
         require(to != address(0), "to cannot be zero");
-        require(from.balance > amount, "sender balance is smaller amount");
+        require(_balance[from] > amount, "sender balance is smaller amount");
         _balance[from] -= amount;
         _balance[to] += amount;
         emit Transfer(from, to, amount);
